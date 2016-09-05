@@ -18,27 +18,14 @@ RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-$(uname -r | s
 	yum install -y puppetdb puppetdb-termini
 
 # put scripts files and change database.ini content
-### COPY ["database.ini", "dbadapt.sh", "/etc/puppetlabs/puppetdb/conf.d/"]
-### RUN chmod a+x /etc/puppetlabs/puppetdb/conf.d/dbadapt.sh && /etc/puppetlabs/puppetdb/conf.d/dbadapt.sh
 COPY ["init.sh", "/etc/puppetlabs/puppetdb/init.sh"]
 
 # change ownership and permissions
 RUN mkdir -p /etc/puppetlabs/puppet/ssl && mkdir -p /etc/puppetlabs/puppetdb/ssl/ && \
 	chown -Rf puppetdb:puppetdb /var/log/puppetlabs/ && \
-	chmod -Rf 0750 /var/log/puppetlabs/
-
-# generate certificates, copy them and chown
-### RUN /opt/puppetlabs/puppet/bin/puppet cert --generate $(hostname) && \
-###	cp /etc/puppetlabs/puppet/ssl/certs/$(hostname).pem /etc/puppetlabs/puppetdb/ssl/$(hostname).cert.pem && \
-###	cp /etc/puppetlabs/puppet/ssl/public_keys/$(hostname).pem /etc/puppetlabs/puppetdb/ssl/$(hostname).public_key.pem && \
-###	cp /etc/puppetlabs/puppet/ssl/private_keys/$(hostname).pem /etc/puppetlabs/puppetdb/ssl/$(hostname).private_key.pem && \
-###	openssl pkcs8 -topk8 -inform PEM -outform DER -in /etc/puppetlabs/puppetdb/ssl/$(hostname).private_key.pem -out /etc/puppetlabs/puppetdb/ssl/$(hostname).private_key.pk8 -nocrypt && \
-###	chown -Rf puppetdb:puppetdb /etc/puppetlabs/
-
-# launch init
-### RUN /opt/puppetlabs/bin/puppetdb ssl-setup -f
+	chmod -Rf 0750 /var/log/puppetlabs/ && \
+	chmod a+x /etc/puppetlabs/puppetdb/init.sh
 
 # start
-### CMD ["/opt/puppetlabs/bin/puppetdb","foreground"]
 CMD ["/etc/puppetlabs/puppetdb/init.sh"]
 

@@ -3,9 +3,9 @@
 if [ ! -f /etc/puppetlabs/initialized ]; then
 	echo "This is the first launch - will init ssl certs, db parameters..."
 	# change database connection settings
-	sed -i.bkp "s@subname.*@subname = //$DB_SERVER:$DB_PORT/$DB_NAME@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
-	sed -i "s@username.*@username = $DB_USER@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
-	sed -i "s@password.*@password = $DB_PASSWORD@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
+	sed -i.bkp "s@# subname.*@subname = //$DB_SERVER:$DB_PORT/$DB_NAME@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
+	sed -i "s@# username.*@username = $DB_USER@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
+	sed -i "s@# password.*@password = $DB_PASSWORD@gi" /etc/puppetlabs/puppetdb/conf.d/database.ini
 	# generate certs
 	/opt/puppetlabs/puppet/bin/puppet cert --generate $(hostname)
         cp /etc/puppetlabs/puppet/ssl/certs/$(hostname).pem /etc/puppetlabs/puppetdb/ssl/$(hostname).cert.pem
