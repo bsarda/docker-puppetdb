@@ -28,4 +28,3 @@ RUN mkdir -p /etc/puppetlabs/puppet/ssl && mkdir -p /etc/puppetlabs/puppetdb/ssl
 
 # start
 CMD ["/etc/puppetlabs/puppetdb/init.sh"]
-
